@@ -687,6 +687,7 @@ sap.ui.define([
                 });
             };
 
+            
             fnCreateNext();
         },
         _bindPipeReportTable: function (sMatnr) {
@@ -708,7 +709,7 @@ sap.ui.define([
             });
         },
         onPipeReportRefresh: function () {
-            
+
             // this._bindPipeReportTable();
         },
     });

@@ -1,0 +1,24 @@
+<core:FragmentDefinition
+    xmlns="sap.m"
+    xmlns:core="sap.ui.core">
+
+    <SelectDialog
+        id="idMaterialSelectDialog"
+        title="Select Material"
+        items="{path: '/ZCB_I_PRODUCT_TEXT'}"
+        liveChange=".onMaterialSearch"
+        confirm=".onMaterialConfirm"
+        cancel=".onMaterialCancel"
+        growing="true"
+        growingThreshold="50"
+        rememberSelections="false"
+        contentWidth="400px"
+        contentHeight="500px">
+
+        <StandardListItem
+            title="{Product}"
+            description="{ProductName}"
+            type="Active"/>
+    </SelectDialog>
+
+</core:FragmentDefinition>

@@ -4,219 +4,741 @@
     xmlns:m="sap.m"
     xmlns:u="sap.ui.unified"
     xmlns:table="sap.ui.table">
- 
+
     <m:Page title="Excel Upload Process">
- 
+
         <m:content>
- 
+
             <m:VBox width="100%">
- 
-                <!--  PANEL 1 — Excel Upload    -->
-                <m:Panel
-                    expandable="true"
-                    expanded="true"
-                    class="sapUiResponsiveMargin"
-                    width="auto"
-                    accessibleRole="Region">
 
-                    <m:headerToolbar>
-                        <m:OverflowToolbar>
-                            <m:Title text="Excel Upload"/>
-                        </m:OverflowToolbar>
-                    </m:headerToolbar>
- 
-                    <m:VBox class="sapUiSmallMargin">
- 
-                        <u:FileUploader
-                            id="fileUploader"
-                            width="350px"
-                            buttonText="Choose Excel"
-                            fileType="xlsx,xls"
-                            placeholder="Select .xlsx or .xls file..." />
- 
-                        <!-- Buttons Row -->
-                        <m:HBox
-                            class="sapUiMediumMarginTop"
-                            justifyContent="SpaceBetween"
-                            width="100%">
+                <!-- METAL UPLOAD PANELS CONTAINER -->
+                <m:VBox id="idUploadContainer" width="100%">
 
-                            <m:Button
-                                text="Send To Table"
-                                type="Emphasized"
-                                icon="sap-icon://upload-to-cloud"
-                                press=".onSendToTable" />
+                    <!-- PANEL 1 —Metal View Excel Upload -->
+                    <m:Panel
+                        expandable="true"
+                        expanded="true"
+                        class="sapUiResponsiveMargin"
+                        width="auto"
+                        accessibleRole="Region">
 
-                            <m:Button
-                                text="Download Template"
-                                type="Transparent"
-                                icon="sap-icon://download"
-                                press=".onDownloadTemplate" />
+                        <m:headerToolbar>
+                            <m:OverflowToolbar>
+                                <m:Title text="Metal Report Excel Uploader"/>
+                                <m:ToolbarSpacer/>
+                                <m:Button text="Report View" type="Attention" icon="sap-icon://table-view" press=".onReportView"/>
+                            </m:OverflowToolbar>
+                        </m:headerToolbar>
 
-                        </m:HBox>
- 
-                    </m:VBox>
- 
-                </m:Panel>
- 
-                <!--  PANEL 2 — Line Item Table (14 cols + UniqueID)-->
-                <m:Panel
-                    expandable="true"
-                    expanded="true"
-                    class="sapUiResponsiveMargin"
-                    width="auto"
-                    accessibleRole="Region">
+                        <m:VBox class="sapUiSmallMargin">
 
-                    <m:headerToolbar>
-                        <m:OverflowToolbar>
-                            <m:Title text="{= 'Line Item Details (' + ${excelModel>/results}.length + ')' }"/>
-                            <m:ToolbarSpacer/>
-                            <m:Button text="Process" type="Accept" icon="sap-icon://process" press=".onProcess"/>
-                        </m:OverflowToolbar>
-                    </m:headerToolbar>
- 
-                    <table:Table
-                        id="idLineItemTable"
-                        rows="{excelModel>/results}"
-                        selectionMode="None"
-                        visibleRowCount="10"
-                        alternateRowColors="true"
-                        enableColumnReordering="true"
-                        enableColumnFreeze="true"
-                        columnHeaderHeight="40"
-                        rowHeight="36">
- 
-                        <table:columns>
- 
-                            <!-- Unique ID — auto-generated per row -->
-                            <!-- <table:Column width="100px">
-                                <m:Label text="Unique ID"/>
-                                <table:template>
-                                    <m:Text text="{excelModel>UNIQUE_ID}"/>
-                                </table:template>
-                            </table:Column> -->
- 
-                            <table:Column width="150px">
-                                <m:Label text="Material"/>
-                                <table:template>
-                                    <m:Text text="{excelModel>MATERIAL}"/>
-                                </table:template>
-                            </table:Column>
- 
-                            <table:Column width="100px">
-                                <m:Label text="Plant"/>
-                                <table:template>
-                                    <m:Text text="{excelModel>PLANT}"/>
-                                </table:template>
-                            </table:Column>
- 
-                            <table:Column width="190px">
-                                <m:Label text="Stock Category"/>
-                                <table:template>
-                                    <m:Text text="{excelModel>STOCK_CATEGORY}"/>
-                                </table:template>
-                            </table:Column>
- 
-                            <table:Column width="150px">
-                                <m:Label text="WBS / Order"/>
-                                <table:template>
-                                    <m:Text text="{excelModel>WBS_ORDER}"/>
-                                </table:template>
-                            </table:Column>
- 
-                            <table:Column width="150px">
-                                <m:Label text="Sheet Material"/>
-                                <table:template>
-                                    <m:Text text="{excelModel>SHEET_MATERIAL}"/>
-                                </table:template>
-                            </table:Column>
- 
-                            <table:Column width="130px">
-                                <m:Label text="Metal Grade"/>
-                                <table:template>
-                                    <m:Text text="{excelModel>METAL_GRADE}"/>
-                                </table:template>
-                            </table:Column>
- 
-                            <table:Column width="140px">
-                                <m:Label text="Sheet Thickness"/>
-                                <table:template>
-                                    <m:Text text="{excelModel>SHEET_THICKNESS}"/>
-                                </table:template>
-                            </table:Column>
- 
-                            <table:Column width="120px">
-                                <m:Label text="RM Length"/>
-                                <table:template>
-                                    <m:Text text="{excelModel>RM_LENGTH}"/>
-                                </table:template>
-                            </table:Column>
- 
-                            <table:Column width="120px">
-                                <m:Label text="RM Width"/>
-                                <table:template>
-                                    <m:Text text="{excelModel>RM_WIDTH}"/>
-                                </table:template>
-                            </table:Column>
- 
-                            <table:Column width="130px">
-                                <m:Label text="Total RM Qty"/>
-                                <table:template>
-                                    <m:Text text="{excelModel>TOTAL_RM_QTY}"/>
-                                </table:template>
-                            </table:Column>
- 
-                            <table:Column width="80px">
-                                <m:Label text="A"/>
-                                <table:template>
-                                    <m:Text text="{excelModel>A}"/>
-                                </table:template>
-                            </table:Column>
- 
-                            <table:Column width="80px">
-                                <m:Label text="B"/>
-                                <table:template>
-                                    <m:Text text="{excelModel>B}"/>
-                                </table:template>
-                            </table:Column>
- 
-                            <table:Column width="80px">
-                                <m:Label text="C"/>
-                                <table:template>
-                                    <m:Text text="{excelModel>C}"/>
-                                </table:template>
-                            </table:Column>
- 
-                            <table:Column width="80px">
-                                <m:Label text="D"/>
-                                <table:template>
-                                    <m:Text text="{excelModel>D}"/>
-                                </table:template>
-                            </table:Column>
- 
-                        </table:columns>
- 
-                    </table:Table>
- 
-                    <m:HBox
-                        width="100%"
-                        fitContainer="true"
-                        justifyContent="End"
-                        class="sapUiSmallMarginTop sapUiSmallMarginBottom">
- 
-                        <!-- <m:Button
-                            text="Process"
-                            type="Accept"
-                            icon="sap-icon://process"
-                            press=".onProcess"/> -->
- 
-                    </m:HBox>
- 
-                </m:Panel>
- 
+                            <m:HBox
+                                justifyContent="SpaceBetween"
+                                alignItems="Center"
+                                width="100%">
+
+                                <u:FileUploader
+                                    id="fileUploader"
+                                    width="350px"
+                                    buttonText="Choose Excel"
+                                    fileType="xlsx,xls"
+                                    placeholder="Select .xlsx or .xls file..."/>
+
+                                <m:HBox>
+                                    <m:Button
+                                        text="Pipe Report"
+                                        type="Neutral"
+                                        icon="sap-icon://pipeline-analysis"
+                                        class="sapUiTinyMarginBegin"
+                                        press=".onPipeReport"/>
+                                </m:HBox>
+
+                            </m:HBox>
+
+                            <m:HBox
+                                class="sapUiMediumMarginTop"
+                                justifyContent="SpaceBetween"
+                                width="100%">
+
+                                <m:Button
+                                    text="Send To Table"
+                                    type="Emphasized"
+                                    icon="sap-icon://upload-to-cloud"
+                                    press=".onSendToTable"/>
+
+                                <m:Button
+                                    text="Download Template"
+                                    type="Transparent"
+                                    icon="sap-icon://download"
+                                    press=".onDownloadTemplate"/>
+
+                            </m:HBox>
+
+                        </m:VBox>
+
+                    </m:Panel>
+
+                    <!-- PANEL 2 — Line Item Table -->
+                    <m:Panel
+                        expandable="true"
+                        expanded="true"
+                        class="sapUiResponsiveMargin"
+                        width="auto"
+                        accessibleRole="Region">
+
+                        <m:headerToolbar>
+                            <m:OverflowToolbar>
+                                <m:Title text="{= 'Line Item Details (' + ${excelModel>/results}.length + ')' }"/>
+                                <m:ToolbarSpacer/>
+                                <m:Button text="Process" type="Accept" icon="sap-icon://process" press=".onProcess"/>
+                            </m:OverflowToolbar>
+                        </m:headerToolbar>
+
+                        <table:Table
+                            id="idLineItemTable"
+                            rows="{excelModel>/results}"
+                            selectionMode="None"
+                            visibleRowCount="10"
+                            alternateRowColors="true"
+                            enableColumnReordering="true"
+                            enableColumnFreeze="true"
+                            columnHeaderHeight="40"
+                            rowHeight="36">
+
+                            <table:columns>
+
+                                <table:Column width="150px">
+                                    <m:Label text="Material"/>
+                                    <table:template><m:Text text="{excelModel>MATERIAL}"/></table:template>
+                                </table:Column>
+
+                                <table:Column width="100px">
+                                    <m:Label text="Plant"/>
+                                    <table:template><m:Text text="{excelModel>PLANT}"/></table:template>
+                                </table:Column>
+
+                                <table:Column width="190px">
+                                    <m:Label text="Stock Category"/>
+                                    <table:template><m:Text text="{excelModel>STOCK_CATEGORY}"/></table:template>
+                                </table:Column>
+
+                                <table:Column width="150px">
+                                    <m:Label text="WBS / Order"/>
+                                    <table:template><m:Text text="{excelModel>WBS_ORDER}"/></table:template>
+                                </table:Column>
+
+                                <table:Column width="150px">
+                                    <m:Label text="Sheet Material"/>
+                                    <table:template><m:Text text="{excelModel>SHEET_MATERIAL}"/></table:template>
+                                </table:Column>
+
+                                <table:Column width="130px">
+                                    <m:Label text="Metal Grade"/>
+                                    <table:template><m:Text text="{excelModel>METAL_GRADE}"/></table:template>
+                                </table:Column>
+
+                                <table:Column width="140px">
+                                    <m:Label text="Sheet Thickness"/>
+                                    <table:template><m:Text text="{excelModel>SHEET_THICKNESS}"/></table:template>
+                                </table:Column>
+
+                                <table:Column width="120px">
+                                    <m:Label text="RM Length"/>
+                                    <table:template><m:Text text="{excelModel>RM_LENGTH}"/></table:template>
+                                </table:Column>
+
+                                <table:Column width="120px">
+                                    <m:Label text="RM Width"/>
+                                    <table:template><m:Text text="{excelModel>RM_WIDTH}"/></table:template>
+                                </table:Column>
+
+                                <table:Column width="130px">
+                                    <m:Label text="Total RM Qty"/>
+                                    <table:template><m:Text text="{excelModel>TOTAL_RM_QTY}"/></table:template>
+                                </table:Column>
+
+                                <table:Column width="80px">
+                                    <m:Label text="A"/>
+                                    <table:template><m:Text text="{excelModel>A}"/></table:template>
+                                </table:Column>
+
+                                <table:Column width="80px">
+                                    <m:Label text="B"/>
+                                    <table:template><m:Text text="{excelModel>B}"/></table:template>
+                                </table:Column>
+
+                                <table:Column width="80px">
+                                    <m:Label text="C"/>
+                                    <table:template><m:Text text="{excelModel>C}"/></table:template>
+                                </table:Column>
+
+                                <table:Column width="80px">
+                                    <m:Label text="D"/>
+                                    <table:template><m:Text text="{excelModel>D}"/></table:template>
+                                </table:Column>
+
+                            </table:columns>
+
+                        </table:Table>
+
+                    </m:Panel>
+
+                </m:VBox>
+
+                <!-- METAL REPORT PANEL — hidden by default -->
+                <m:VBox id="idReportContainer" visible="false" width="100%">
+
+                    <m:Panel
+                        expandable="false"
+                        expanded="true"
+                        class="sapUiResponsiveMargin"
+                        width="auto"
+                        accessibleRole="Region">
+
+                        <m:headerToolbar>
+                            <m:OverflowToolbar>
+                                <m:Button icon="sap-icon://nav-back" type="Transparent" press=".onBackFromReport"/>
+                                <m:Title text="{= 'Report View (' + ${reportCount>/count} + ')' }"/>
+                                <!-- <m:Title text="Report View"/> -->
+                                <m:ToolbarSpacer/>
+                                <m:Button
+                                    text="Refresh"
+                                    icon="sap-icon://refresh"
+                                    type="Transparent"
+                                    press=".onReportRefresh"/>
+                            </m:OverflowToolbar>
+                        </m:headerToolbar>
+
+                        <table:Table
+                            id="idReportTable"
+                            selectionMode="None"
+                            visibleRowCount="15"
+                            alternateRowColors="true"
+                            enableColumnReordering="true"
+                            enableColumnFreeze="true"
+                            columnHeaderHeight="40"
+                            rowHeight="36">
+
+                            <table:columns>
+
+                                <table:Column width="180px">
+                                    <m:Label text="Serial No / QR"/>
+                                    <table:template>
+                                        <m:Text text="{SlNoQr}"/>
+                                    </table:template>
+                                </table:Column>
+
+                                <table:Column width="150px">
+                                    <m:Label text="Material"/>
+                                    <table:template>
+                                        <m:Text text="{Material}"/>
+                                    </table:template>
+                                </table:Column>
+
+                                <table:Column width="250px">
+                                    <m:Label text="Product Name"/>
+                                    <table:template>
+                                        <m:Text text="{ProductName}"/>
+                                    </table:template>
+                                </table:Column>
+
+                                <table:Column width="100px">
+                                    <m:Label text="Plant"/>
+                                    <table:template>
+                                        <m:Text text="{Plant}"/>
+                                    </table:template>
+                                </table:Column>
+
+                                <table:Column width="190px">
+                                    <m:Label text="Stock Category"/>
+                                    <table:template>
+                                        <m:Text text="{StockCategory}"/>
+                                    </table:template>
+                                </table:Column>
+
+                                <table:Column width="150px">
+                                    <m:Label text="WBS / Order"/>
+                                    <table:template>
+                                        <m:Text text="{WbsOrder}"/>
+                                    </table:template>
+                                </table:Column>
+
+                                <table:Column width="150px">
+                                    <m:Label text="Sheet Material"/>
+                                    <table:template>
+                                        <m:Text text="{SheetMaterial}"/>
+                                    </table:template>
+                                </table:Column>
+
+                                <table:Column width="130px">
+                                    <m:Label text="Metal Grade"/>
+                                    <table:template>
+                                        <m:Text text="{MetalGrade}"/>
+                                    </table:template>
+                                </table:Column>
+
+                                <table:Column width="140px">
+                                    <m:Label text="Sheet Thickness"/>
+                                    <table:template>
+                                        <m:Text text="{SheetThickness}"/>
+                                    </table:template>
+                                </table:Column>
+
+                                <table:Column width="120px">
+                                    <m:Label text="RM Length"/>
+                                    <table:template>
+                                        <m:Text text="{RmLength}"/>
+                                    </table:template>
+                                </table:Column>
+
+                                <table:Column width="120px">
+                                    <m:Label text="RM Width"/>
+                                    <table:template>
+                                        <m:Text text="{RmWidth}"/>
+                                    </table:template>
+                                </table:Column>
+
+                                <table:Column width="130px">
+                                    <m:Label text="Total RM Qty"/>
+                                    <table:template>
+                                        <m:Text text="{TotalRmQty}"/>
+                                    </table:template>
+                                </table:Column>
+
+                                <table:Column width="80px">
+                                    <m:Label text="Cut A"/>
+                                    <table:template>
+                                        <m:Text text="{CutA}"/>
+                                    </table:template>
+                                </table:Column>
+
+                                <table:Column width="80px">
+                                    <m:Label text="Cut B"/>
+                                    <table:template>
+                                        <m:Text text="{CutB}"/>
+                                    </table:template>
+                                </table:Column>
+
+                                <table:Column width="80px">
+                                    <m:Label text="Cut C"/>
+                                    <table:template>
+                                        <m:Text text="{CutC}"/>
+                                    </table:template>
+                                </table:Column>
+
+                                <table:Column width="80px">
+                                    <m:Label text="Cut D"/>
+                                    <table:template>
+                                        <m:Text text="{CutD}"/>
+                                    </table:template>
+                                </table:Column>
+
+                                <table:Column width="120px">
+                                    <m:Label text="Mat Document"/>
+                                    <table:template>
+                                        <m:Text text="{MatDocument}"/>
+                                    </table:template>
+                                </table:Column>
+
+                                <table:Column width="120px">
+                                    <m:Label text="Created By"/>
+                                    <table:template>
+                                        <m:Text text="{CreatedBy}"/>
+                                    </table:template>
+                                </table:Column>
+
+                                <table:Column width="180px">
+                                    <m:Label text="Created At"/>
+                                    <table:template>
+                                        <m:Text text="{
+                                            path : 'CreatedAt',
+                                            formatter : '.formatDate'
+                                        }"/>
+                                    </table:template>
+                                </table:Column>
+                            </table:columns>
+                        </table:Table>
+                    </m:Panel>
+                </m:VBox>
+
+                <!-- PIPE UPLOAD PANELS CONTAINER -->
+                <m:VBox id="idUploadContainerPipeView" visible="false" width="100%">
+
+                    <!-- PANEL 1 — Pipe View Excel Upload -->
+                    <m:Panel
+                        expandable="true"
+                        expanded="true"
+                        class="sapUiResponsiveMargin"
+                        width="auto"
+                        accessibleRole="Region">
+
+                        <m:headerToolbar>
+                            <m:OverflowToolbar>
+                                <m:Title text="Pipe Report Excel Uploader"/>
+                                <m:ToolbarSpacer/>
+                                <m:Button text="Report View" type="Attention" icon="sap-icon://table-view" press=".onReportPipeView"/>
+                            </m:OverflowToolbar>
+                        </m:headerToolbar>
+
+                        <m:VBox class="sapUiSmallMargin">
+
+                            <m:HBox
+                                justifyContent="SpaceBetween"
+                                alignItems="Center"
+                                width="100%">
+
+                                <u:FileUploader
+                                    id="fileUploaderPipe"
+                                    width="350px"
+                                    buttonText="Choose Excel"
+                                    fileType="xlsx,xls"
+                                    placeholder="Select .xlsx or .xls file..."/>
+
+                                <m:HBox>
+                                    <m:Button
+                                        text="Metal Report"
+                                        type="Neutral"
+                                        icon="sap-icon://grid"
+                                        class="sapUiTinyMarginBegin"
+                                        press=".onMetalReport"/>
+                                </m:HBox>
+
+                            </m:HBox>
+
+                            <m:HBox
+                                class="sapUiMediumMarginTop"
+                                justifyContent="SpaceBetween"
+                                width="100%">
+
+                                <m:Button
+                                    text="Send To Table"
+                                    type="Emphasized"
+                                    icon="sap-icon://upload-to-cloud"
+                                    press=".onSendToTablePipe"/>
+
+                                <m:Button
+                                    text="Download Template"
+                                    type="Transparent"
+                                    icon="sap-icon://download"
+                                    press=".onDownloadTemplatePipe"/>
+
+                            </m:HBox>
+
+                        </m:VBox>
+
+                    </m:Panel>
+
+                    <!-- PANEL 2 — Line Item Table -->
+                    <m:Panel
+                        expandable="true"
+                        expanded="true"
+                        class="sapUiResponsiveMargin"
+                        width="auto"
+                        accessibleRole="Region">
+
+                        <m:headerToolbar>
+                            <m:OverflowToolbar>
+                                <m:Title text="{= 'Pipe Line Item Details (' + ${pipeExcelModel>/results}.length + ')' }"/>
+                                <!-- <m:Title text="Line Item Details (0)" /> -->
+                                <m:ToolbarSpacer/>
+                                <m:Button text="Process" type="Accept" icon="sap-icon://process" press=".onProcessPipe"/>
+                            </m:OverflowToolbar>
+                        </m:headerToolbar>
+
+                        <table:Table
+                            id="idLineItemTablePipe"
+                            rows="{pipeExcelModel>/results}"
+                            selectionMode="None"
+                            visibleRowCount="10"
+                            alternateRowColors="true"
+                            enableColumnReordering="true"
+                            enableColumnFreeze="true"
+                            columnHeaderHeight="40"
+                            rowHeight="36">
+
+                            <table:columns>
+
+                                <table:Column width="150px">
+                                    <m:Label text="Material"/>
+                                    <table:template><m:Text text="{pipeExcelModel>MATERIAL}"/></table:template>
+                                </table:Column>
+
+                                <table:Column width="100px">
+                                    <m:Label text="Plant"/>
+                                    <table:template><m:Text text="{pipeExcelModel>PLANT}"/></table:template>
+                                </table:Column>
+
+                                <table:Column width="190px">
+                                    <m:Label text="Stock Category"/>
+                                    <table:template><m:Text text="{pipeExcelModel>STOCK_CATEGORY}"/></table:template>
+                                </table:Column>
+
+                                <table:Column width="150px">
+                                    <m:Label text="WBS / Order"/>
+                                    <table:template><m:Text text="{pipeExcelModel>WBS_ORDER}"/></table:template>
+                                </table:Column>
+
+                                <table:Column width="200px">
+                                    <m:Label text="Pipe Material"/>
+                                    <table:template><m:Text text="{pipeExcelModel>PIPE_MATERIAL}"/></table:template>
+                                </table:Column>
+
+                                <table:Column width="130px">
+                                    <m:Label text="Metal Grade"/>
+                                    <table:template><m:Text text="{pipeExcelModel>METAL_GRADE}"/></table:template>
+                                </table:Column>
+
+                                <table:Column width="140px">
+                                    <m:Label text="RM Size"/>
+                                    <table:template><m:Text text="{pipeExcelModel>RM_SIZE}"/></table:template>
+                                </table:Column>
+
+                                <table:Column width="120px">
+                                    <m:Label text="RM Uom"/>
+                                    <table:template><m:Text text="{pipeExcelModel>RM_UOM}"/></table:template>
+                                </table:Column>
+
+                                <table:Column width="120px">
+                                    <m:Label text="Consume Size"/>
+                                    <table:template><m:Text text="{pipeExcelModel>CONSUME_SIZE}"/></table:template>
+                                </table:Column>
+
+                                <table:Column width="130px">
+                                    <m:Label text="Consume Uom"/>
+                                    <table:template><m:Text text="{pipeExcelModel>CONSUME_UOM}"/></table:template>
+                                </table:Column>
+
+                                <table:Column width="140px">
+                                    <m:Label text="RMN Size"/>
+                                    <table:template><m:Text text="{pipeExcelModel>RMN_SIZE}"/></table:template>
+                                </table:Column>
+
+                                <table:Column width="140px">
+                                    <m:Label text="RMN Uom"/>
+                                    <table:template><m:Text text="{pipeExcelModel>RMN_UOM}"/></table:template>
+                                </table:Column>
+
+                                <table:Column width="140px">
+                                    <m:Label text="Internal Diameter"/>
+                                    <table:template><m:Text text="{pipeExcelModel>INTERNAL_DIAMETER}"/></table:template>
+                                </table:Column>
+
+                                <table:Column width="140px">
+                                    <m:Label text="External Diameter"/>
+                                    <table:template><m:Text text="{pipeExcelModel>EXTERNAL_DIAMETER}"/></table:template>
+                                </table:Column>
+
+                                <table:Column width="140px">
+                                    <m:Label text="Length"/>
+                                    <table:template><m:Text text="{pipeExcelModel>LENGTH}"/></table:template>
+                                </table:Column>
+
+                                <table:Column width="140px">
+                                    <m:Label text="Length Uom"/>
+                                    <table:template><m:Text text="{pipeExcelModel>LENGTH_UOM}"/></table:template>
+                                </table:Column>
+
+                            </table:columns>
+
+                        </table:Table>
+
+                    </m:Panel>
+
+                </m:VBox>
+
+                <!-- PIPE REPORT PANEL — hidden by default -->
+                <m:VBox id="idPipeReportContainer" visible="false" width="100%">
+                    <m:Panel
+                        expandable="false"
+                        expanded="true"
+                        class="sapUiResponsiveMargin"
+                        width="auto"
+                        accessibleRole="Region">
+
+                        <m:headerToolbar>
+                            <m:OverflowToolbar>
+                                <m:Button icon="sap-icon://nav-back" type="Transparent" press=".onBackFromPipeReport"/>
+                                <m:Title text="Report View"/>
+                                <m:ToolbarSpacer/>
+                                <m:Button
+                                    text="Refresh"
+                                    icon="sap-icon://refresh"
+                                    type="Transparent"
+                                    press=".onPipeReportRefresh"/>
+                            </m:OverflowToolbar>
+                        </m:headerToolbar>
+
+                        <table:Table
+                            id="idPipeReportTable"
+                            selectionMode="None"
+                            visibleRowCount="15"
+                            alternateRowColors="true"
+                            enableColumnReordering="true"
+                            enableColumnFreeze="true"
+                            columnHeaderHeight="40"
+                            rowHeight="36">
+
+                            <table:columns>
+
+                                <table:Column width="180px">
+                                    <m:Label text="Serial No / QR"/>
+                                    <table:template>
+                                        <m:Text text="{SlNoQr}"/>
+                                    </table:template>
+                                </table:Column>
+
+                                <table:Column width="150px">
+                                    <m:Label text="Material"/>
+                                    <table:template>
+                                        <m:Text text="{Material}"/>
+                                    </table:template>
+                                </table:Column>
+
+                                <table:Column width="250px">
+                                    <m:Label text="Product Name"/>
+                                    <table:template>
+                                        <m:Text text="{ProductName}"/>
+                                    </table:template>
+                                </table:Column>
+
+                                <table:Column width="100px">
+                                    <m:Label text="Plant"/>
+                                    <table:template>
+                                        <m:Text text="{Plant}"/>
+                                    </table:template>
+                                </table:Column>
+
+                                <table:Column width="190px">
+                                    <m:Label text="Stock Category"/>
+                                    <table:template>
+                                        <m:Text text="{StockCategory}"/>
+                                    </table:template>
+                                </table:Column>
+
+                                <table:Column width="150px">
+                                    <m:Label text="WBS / Order"/>
+                                    <table:template>
+                                        <m:Text text="{WbsOrder}"/>
+                                    </table:template>
+                                </table:Column>
+
+                                <table:Column width="150px">
+                                    <m:Label text="Pipe Material"/>
+                                    <table:template>
+                                        <m:Text text="{PipeMaterial}"/>
+                                    </table:template>
+                                </table:Column>
+
+                                <table:Column width="130px">
+                                    <m:Label text="Metal Grade"/>
+                                    <table:template>
+                                        <m:Text text="{MetalGrade}"/>
+                                    </table:template>
+                                </table:Column>
+
+                                <table:Column width="140px">
+                                    <m:Label text="Sheet Thickness"/>
+                                    <table:template>
+                                        <m:Text text="{SheetThickness}"/>
+                                    </table:template>
+                                </table:Column>
+
+                                <table:Column width="120px">
+                                    <m:Label text="RM Size"/>
+                                    <table:template>
+                                        <m:Text text="{Rmsize}"/>
+                                    </table:template>
+                                </table:Column>
+
+                                <table:Column width="120px">
+                                    <m:Label text="RM Uom"/>
+                                    <table:template>
+                                        <m:Text text="{RmUom}"/>
+                                    </table:template>
+                                </table:Column>
+
+                                <table:Column width="130px">
+                                    <m:Label text="Consume Size"/>
+                                    <table:template>
+                                        <m:Text text="{ConsumeSize}"/>
+                                    </table:template>
+                                </table:Column>
+
+                                <table:Column width="80px">
+                                    <m:Label text="Consume Uom"/>
+                                    <table:template>
+                                        <m:Text text="{ConsumeUom}"/>
+                                    </table:template>
+                                </table:Column>
+
+                                <table:Column width="140px">
+                                    <m:Label text="RMNsize"/>
+                                    <table:template>
+                                        <m:Text text="{RMNsize}"/>
+                                    </table:template>
+                                </table:Column>
+
+                                <table:Column width="140px">
+                                    <m:Label text="RMN Uom"/>
+                                    <table:template>
+                                        <m:Text text="{RMNUom}"/>
+                                    </table:template>
+                                </table:Column>
+
+                                <table:Column width="140px">
+                                    <m:Label text="Internal Diameter"/>
+                                    <table:template>
+                                        <m:Text text="{InternalDiameter}"/>
+                                    </table:template>
+                                </table:Column>
+
+                                <table:Column width="120px">
+                                    <m:Label text="External Diameter"/>
+                                    <table:template>
+                                        <m:Text text="{ExternalDiameter}"/>
+                                    </table:template>
+                                </table:Column>
+
+                                <table:Column width="120px">
+                                    <m:Label text="Length"/>
+                                    <table:template>
+                                        <m:Text text="{Length}"/>
+                                    </table:template>
+                                </table:Column>
+
+                                <table:Column width="120px">
+                                    <m:Label text="Length Uom"/>
+                                    <table:template>
+                                        <m:Text text="{LengthUom}"/>
+                                    </table:template>
+                                </table:Column>
+
+                                <table:Column width="120px">
+                                    <m:Label text="CreatedBy"/>
+                                    <table:template>
+                                        <m:Text text="{CreatedBy}"/>
+                                    </table:template>
+                                </table:Column>
+
+                                <table:Column width="180px">
+                                    <m:Label text="Created At"/>
+                                    <table:template>
+                                        <m:Text text="{
+                                            path : 'CreatedAt',
+                                            formatter : '.formatDate'
+                                        }"/>
+                                    </table:template>
+                                </table:Column>
+                            </table:columns>
+                        </table:Table>
+                    </m:Panel>
+
+                </m:VBox>
+
             </m:VBox>
- 
+
         </m:content>
- 
+
     </m:Page>
- 
+
 </mvc:View>
