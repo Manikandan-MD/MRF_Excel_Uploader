@@ -688,6 +688,8 @@ sap.ui.define([
             };
 
             
+
+            
             fnCreateNext();
         },
         _bindPipeReportTable: function (sMatnr) {
